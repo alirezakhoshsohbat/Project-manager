@@ -1,0 +1,88 @@
+{% extends 'base.html'%} 
+{% block title %} Edit Project {% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="/static/fontawesome-free-6.4.0-web/css/all.min.css"/>
+<link rel="stylesheet" href="/static/home.css" />
+<script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+<style>
+    html{
+        height: 100% !important;    
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>ویرایش پروژه</h1>
+    <form method="POST">
+        <div>
+            <label>نام پروژه:</label>
+            <input type="text" name="name" value="{{ project['name'] }}" required>
+        </div>
+        <div>
+            <label>نام کارفرما:</label>
+            <input type="text" name="boss" value="{{ project['boss'] }}" required>
+        </div>
+        <div>
+            <label>نام اعضا تیم:</label>
+            <input type="text" name="team" value="{{ project['team'] }}" required>
+        </div>
+        <div>
+            <label>تاریخ شروع:</label>
+            <input type="text" name="start" value="{{ project['start'] }}" required>
+        </div>
+        <div>
+            <label>تاریخ پایان:</label>
+            <input type="text" name="end" value="{{ project['end'] }}" required>
+        </div>
+        <div>
+            <label>دریافتی:</label>
+            <input type="number" name="profit" value="{{ project['profit'] }}" required>
+        </div>
+        <div>
+            <label>هزینه:</label>
+            <input type="number" name="loss" value="{{ project['loss'] }}" required>
+        </div>
+        <div>
+            <label>سود:</label>
+            <input type="number" name="gain" value="{{ project['gain'] }}" readonly>
+        </div>
+        <div>
+            <label>شرح پروژه:</label>
+            <textarea name="about" id="editor" required>{{ project['about'] }}</textarea>
+        </div>
+        <div style="margin: 40px 250px;">
+            <button type="submit">ذخیره</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => {
+            console.log('ویرایشگر متن آماده است.');
+            const fontSizeSelector = document.querySelector('#fontSize');
+            fontSizeSelector.addEventListener('change', (event) => {
+                const fontSize = event.target.value;
+                editor.execute('fontSize', { value: fontSize });
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <script>
+            alert('{{ message }}')
+        </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+{% endblock %}

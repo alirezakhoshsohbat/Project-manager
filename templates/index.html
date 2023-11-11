@@ -1,0 +1,59 @@
+{% extends 'base.html'%}
+
+{%block title%} login | register {%endblock%}
+{%block link%}
+<link rel="stylesheet" href="/static/fontawesome-free-6.4.0-web/css/all.min.css"/>
+<link rel="stylesheet" href="/static/style.css"/>
+{%endblock%}
+{% block content%}
+    <div class="container">
+      <div class="login-box" id="login-set">
+        <h2>فرم ورود</h2>
+        <form action="/login" method="POST">
+          <div class="user-box">
+            <input type="text" name="username" required="">
+            <label>نام کاربری</label>
+          </div>
+          <div class="user-box">
+            <input type="password" name="password" required="">
+            <label>رمز عبور</label>
+          </div>
+          <div class="submit">
+            <input type="submit" value="ورود">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container">
+      <div class="login-box" id="register">
+        <h2>فرم ثبت نام</h2>
+        <form action="/register" method="POST">
+          <div class="user-box">
+            <input type="text" name="new_username" required="">
+            <label>نام کاربری</label>
+          </div>
+          <div class="user-box">
+            <input type="password" name="new_password" required="">
+            <label>رمز عبور</label>
+          </div>
+          <div class="submit">
+            <input type="submit" value="ورود">
+          </div>
+        </form>
+      </div>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+      {% for message in messages %}
+      <script>
+        alert('{{ message }}')
+      </script>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
+<script>
+  function submitForm() {
+    document.getElementById("myForm").submit();
+    location.reload();
+  }
+</script>
+{% endblock%}

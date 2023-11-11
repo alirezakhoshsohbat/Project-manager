@@ -1,0 +1,518 @@
+{% extends 'base.html'%} 
+{% block title %} Profile {% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="/static/fontawesome-free-6.4.0-web/css/all.min.css"/>
+<link rel="stylesheet" href="/static/home.css" />
+<script src="https://cdn.ckeditor.com/ckeditor5/29.2.0/classic/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1 class="title">سامانه مدیریت پروژه خاوران</h1>
+    <a href="{{ url_for('index')}}" id="exit-btn">خروج</a>
+    <div class="logo">
+        <span class="username">{{ username }}</span>
+        <img src="/static/assets/default-avatar.png"/>
+    </div>
+</div>
+<div class="menu">
+    <img src="/static/assets/default-avatar.png"/>
+    <span class="username"> نام کاربری شما: {{ username }}</span>
+    <ul>
+        <li><a id="project-link">مدیریت پروژه</a></li>
+        <li><a id="gozaresh">گزارش گیری</a></li>
+        <li><a id="financial-link">گزارش مالی</a></li>
+    </ul>
+</div>
+<div class="content" id="sub-sabt" style="display: none;">
+    <ul>
+        <li><a href="{{url_for('dashboard')}}">نمایش همه</a></li>
+        <li><a id="creat-project-link">ثبت پروژه</a></li>
+        <li><a id="edit-project-link">ویرایش پروژه</a></li>
+        <li><a id="delete-project-link">حذف پروژه</a></li>
+    </ul>
+</div>
+<div class="content" id="sub-gozaresh" style="display: none;">
+    <ul>
+        <li><a id="search-by-name-link" >نام پروژه</a></li>
+        <li><a id="search-by-start-link">تاریخ شروع پروژه</a></li>
+        <li><a id="search-by-end-link">تاریخ پایان پروژه</a></li>
+        <li><a id="search-by-mount-link">گزارش یک ماه خاص</a></li>
+    </ul>
+</div>
+
+
+<div class="contaner">
+    <div id="listproject" style="display:{{display_all}};">
+        {% if projects %}
+        <table>
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+            </tr>
+            {% set count = 0 %}
+            {% for project in projects %}
+            {% set count = count + 1 %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.boss }}</td>
+                <td>{{ project.team }}</td>
+                <td>{{ project.start }}</td>
+                <td>{{ project.end }}</td>
+                <td>{{ project.profit }}</td>
+                <td>{{ project.loss }}</td>
+                <td>{{ project.gain }}</td>
+                <td>{{ project.about[:30]|safe }}</td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه های شما: {{ projects|length }}</p>
+            {% else %}
+            <p id="shomarande" style="text-align: center !important;">شما هیج پروژه ای برای نمایش ندارید</p>
+            {% endif %}
+        </table>
+    </div>
+
+    <div class="form-container" id="creat-project" style="display: none;">
+        <form action="/project-register" method="POST">
+            <div class="row">
+                <label>نام پروژه:</label>
+                <input type="text" name="project-name" required>
+            </div>
+            <div class="row">
+                <label >نام کارفرما:</label>
+                <input type="text" name="boss-name" required>
+            </div>
+            <div class="row">
+                <label>نام اعضا تیم :</label>
+                <input type="text" name="team" required placeholder="نام اعضا را با علامت / از هم جدا کنید">
+            </div>
+            <div class="row">
+                <label>تاریخ شروع:</label>
+                <input type="text" name="start-date" class="initial-value-example" required>
+            </div>
+            <div class="row">
+                <label>تاریخ پایان:</label>
+                <input type="text" name="end-date" class="initial-value-example" required>
+            </div>
+            <div class="row">
+                <label>دریافتی :</label>
+                <input type="number" name="profit" required>
+            </div>
+            <div class="row">
+                <label for="loss">هزینه :</label>
+                <input type="number" name="loss" required>
+            </div>
+            <div class="row">
+                <label for="loss">شرح پروژه :</label>
+                <textarea name="about" id="editor" cols="30" rows="10"></textarea>  
+            </div>
+            <div class="row button">
+                <input type="submit" value="ثبت پروژه جدید">
+            </div>
+        </form>  
+    </div>
+
+    <div id="edit-project" style="display: none;">
+        {% if projects %}
+        <table>
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+                <th></th>
+            </tr>
+            {% set count = 0 %}
+            {% for project in projects %}
+            {% set count = count + 1 %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.boss }}</td>
+                <td>{{ project.team }}</td>
+                <td>{{ project.start }}</td>
+                <td>{{ project.end }}</td>
+                <td>{{ project.profit }}</td>
+                <td>{{ project.loss }}</td>
+                <td>{{ project.gain }}</td>
+                <td>{{ project.about[:30]|safe }}</td>
+                <td><a id="edit-btn" href="/edit_project/{{ loop.index }}" style="display: block;">ویرایش</a></td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه های شما: {{ projects|length }}</p>
+            {% else %}
+            <p id="shomarande" style="text-align: center !important;">شما هیج پروژه ای برای ویرایش ندارید</p>
+            {% endif %}
+        </table>
+    </div>
+
+    <div id="delete-project" style="display: none;">
+        {% if projects %}
+        <table>
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+                <th></th>
+            </tr>
+            {% set count = 0 %}
+            {% for project in projects %}
+            {% set count = count + 1 %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.boss }}</td>
+                <td>{{ project.team }}</td>
+                <td>{{ project.start }}</td>
+                <td>{{ project.end }}</td>
+                <td>{{ project.profit }}</td>
+                <td>{{ project.loss }}</td>
+                <td>{{ project.gain }}</td>
+                <td>{{ project.about[:30]|safe }}</td>
+                <td><a id="delete-btn" href="/delete/{{ loop.index }}">حذف</a></td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه های شما: {{ projects|length }}</p>
+            {% else %}
+            <p id="shomarande" style="text-align: center !important;">شما هیج پروژه ای برای حذف ندارید</p>
+            {% endif %}
+        </table>
+    </div>
+
+    <div id="search-by-name" style="display:{{display_result_name}};">
+        <h1>جست و جو بر اساس نام</h1>
+        <form id="myForm" method="get"  action="{{url_for('search_name')}}">
+            <input class="search" type="search" name="search-name-form">
+            <button class="search-btn" type="submit"> جست و جو</button>
+        </form>
+        <table>
+            {% if result_name %}
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+            </tr>
+            {% for project in result_name %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project['name'] }}</td>
+                <td>{{ project['boss'] }}</td>
+                <td>{{ project['team'] }}</td>
+                <td>{{ project['start'] }}</td>
+                <td>{{ project['end'] }}</td>
+                <td>{{ project['profit'] }}</td>
+                <td>{{ project['loss'] }}</td>
+                <td>{{ project['gain'] }}</td>
+                <td>{{ project['about'][:30]|safe }}</td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه های یافت شده : {{ result_name|length }}</p>
+            {% else %}
+            <p id="shomarande">پروژه ای یافت نشد</p>
+            {% endif %}
+        </table>
+    </div>
+
+    <div id="search-by-start" style="display:{{display_result_start}};">
+        <h1>جست و جو بر اساس تاریخ شروع پروژه</h1>
+        <form id="myForm" method="get"  action="{{url_for('search_by_start')}}">
+            <input class="search" type="search" name="search-start-form">
+            <button class="search-btn" type="submit"> جست و جو</button>
+        </form>
+        <table>
+            {% if result_start %}
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+            </tr>
+            {% for project in result_start %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project['name'] }}</td>
+                <td>{{ project['boss'] }}</td>
+                <td>{{ project['team'] }}</td>
+                <td>{{ project['start'] }}</td>
+                <td>{{ project['end'] }}</td>
+                <td>{{ project['profit'] }}</td>
+                <td>{{ project['loss'] }}</td>
+                <td>{{ project['gain'] }}</td>
+                <td>{{ project['about'][:30]|safe }}</td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه های یافت شده : {{ result_start|length }}</p>
+            {% else %}
+            <p id="shomarande">پروژه ای یافت نشد</p>
+            {% endif %}
+        </table>
+    </div>
+
+    <div id="search-by-end" style="display:{{display_result_end}};">
+        <h1>جست و جو بر اساس تاریخ پایان پروژه</h1>
+        <form id="myForm" method="get"  action="{{url_for('search_by_end')}}">
+            <input class="search" type="search" name="search-end-form">
+            <button class="search-btn" type="submit"> جست و جو</button>
+        </form>
+        <table>
+            {% if result_end %}
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+            </tr>
+            {% for project in result_end %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project['name'] }}</td>
+                <td>{{ project['boss'] }}</td>
+                <td>{{ project['team'] }}</td>
+                <td>{{ project['start'] }}</td>
+                <td>{{ project['end'] }}</td>
+                <td>{{ project['profit'] }}</td>
+                <td>{{ project['loss'] }}</td>
+                <td>{{ project['gain'] }}</td>
+                <td>{{ project['about'][:30]|safe }}</td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه های یافت شده : {{ result_end|length }}</p>
+            {% else %}
+            <p id="shomarande">پروژه ای یافت نشد</p>
+            {% endif %}
+        </table>
+    </div>
+
+    <div id="search-by-mount" style="display:{{display_result_mount}};">
+        <h1>جستجو بر اساس یک ماه خاص</h1>
+        <form id="myForm" method="get" action="{{url_for('search_by_mount')}}">
+            <span>از</span>
+            <select name="mount" id="mounts">
+                <option value="01">فروردین</option>
+                <option value="02">اردیبهشت</option>
+                <option value="03">خرداد</option>
+                <option value="04">تیر</option>
+                <option value="05">مرداد</option>
+                <option value="06">شهریور</option>
+                <option value="07">مهر</option>
+                <option value="08">آبان</option>
+                <option value="09">آذر</option>
+                <option value="10">دی</option>
+                <option value="11">بهمن</option>
+                <option value="12">اسفند</option>
+            </select>
+            <input name="year" id="year" type="text" placeholder="سال">
+            <span>تا</span>
+            <select name="mountend" id="mounts">
+                <option value="01">فروردین</option>
+                <option value="02">اردیبهشت</option>
+                <option value="03">خرداد</option>
+                <option value="04">تیر</option>
+                <option value="05">مرداد</option>
+                <option value="06">شهریور</option>
+                <option value="07">مهر</option>
+                <option value="08">آبان</option>
+                <option value="09">آذر</option>
+                <option value="10">دی</option>
+                <option value="11">بهمن</option>
+                <option value="12">اسفند</option>
+            </select>
+            <input name="yearend" id="year" type="text" placeholder="سال">
+            <button class="mount-btn" type="submit">جستجو</button>
+        </form>
+        <table>
+            {% if result_mount %}
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+            </tr>
+            {% for project in result_mount %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project['name'] }}</td>
+                <td>{{ project['boss'] }}</td>
+                <td>{{ project['team'] }}</td>
+                <td>{{ project['start'] }}</td>
+                <td>{{ project['end'] }}</td>
+                <td>{{ project['profit'] }}</td>
+                <td>{{ project['loss'] }}</td>
+                <td>{{ project['gain'] }}</td>
+                <td>{{ project['about'][:30]|safe }}</td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">تعداد پروژه‌های یافت شده: {{ result_mount|length }}</p>
+            {% else %}
+            <p id="shomarande">پروژه‌ای یافت نشد</p>
+            {% endif %}
+        </table>
+    </div>
+    
+    <div id="search-financial" style="display:{{display_result_financial}};">
+        <h1>گزارش درآمد</h1>
+        <form id="myForm" method="get" action="{{url_for('search_financial')}}">
+            <span>از</span>
+            <select name="mah" id="mounts">
+                <option value="01">فروردین</option>
+                <option value="02">اردیبهشت</option>
+                <option value="03">خرداد</option>
+                <option value="04">تیر</option>
+                <option value="05">مرداد</option>
+                <option value="06">شهریور</option>
+                <option value="07">مهر</option>
+                <option value="08">آبان</option>
+                <option value="09">آذر</option>
+                <option value="10">دی</option>
+                <option value="11">بهمن</option>
+                <option value="12">اسفند</option>
+            </select>
+            <input name="sal" id="year" type="text" placeholder="سال">
+            <span>تا</span>
+            <select name="mahend" id="mounts">
+                <option value="01">فروردین</option>
+                <option value="02">اردیبهشت</option>
+                <option value="03">خرداد</option>
+                <option value="04">تیر</option>
+                <option value="05">مرداد</option>
+                <option value="06">شهریور</option>
+                <option value="07">مهر</option>
+                <option value="08">آبان</option>
+                <option value="09">آذر</option>
+                <option value="10">دی</option>
+                <option value="11">بهمن</option>
+                <option value="12">اسفند</option>
+            </select>
+            <input name="salend" id="year" type="text" placeholder="سال">
+            <button class="mount-btn" type="submit">جستجو</button>
+        </form>
+        <table>
+            {% if result_mount_finance %}
+            <tr>
+                <th>ردیف</th>
+                <th>نام پروژه</th>
+                <th>نام کارفرما</th>
+                <th>اعضا تیم</th>
+                <th>تاریخ شروع</th>
+                <th>تاریخ پایان</th>
+                <th>دریافتی</th>
+                <th>هزینه</th>
+                <th>سود</th>
+                <th>شرح پروژه</th>
+            </tr>
+            {% for project in result_mount_finance %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ project['name'] }}</td>
+                <td>{{ project['boss'] }}</td>
+                <td>{{ project['team'] }}</td>
+                <td>{{ project['start'] }}</td>
+                <td>{{ project['end'] }}</td>
+                <td>{{ project['profit'] }}</td>
+                <td>{{ project['loss'] }}</td>
+                <td>{{ project['gain'] }}</td>
+                <td>{{ project['about'][:30]|safe }}</td>
+                {% set count = loop.index %}
+            </tr>
+            {% endfor %}
+            <p id="shomarande">میزان درآمد : {{profit}}</p>
+            <p id="shomarande">میزان هزینه : {{loss}}</p>
+            <p id="shomarande">میزان سود : {{gain}}</p>
+            <p id="shomarande">تعداد پروژه‌های یافت شده: {{ result_mount_finance|length }}</p>
+            {% else %}
+            <p id="shomarande">پروژه‌ای یافت نشد</p>
+            {% endif %}
+        </table>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <script>
+            alert('{{ message }}')
+        </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<script src="/static/index.js"></script>
+{% endblock %}

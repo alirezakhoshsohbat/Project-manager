@@ -1,0 +1,486 @@
+@font-face {
+    font-family: 'iran-sans';
+    src: url("/static/fonts/iransans.ttf");
+}
+* {
+    font-family: 'iran-sans';
+    direction: rtl;
+}
+body{
+  background: linear-gradient(#141e30, #17212e);
+  background-attachment: fixed;
+
+}
+.test{
+  display: none !important;
+}
+h1{
+  color: wheat;
+  text-align: center;
+}
+/* هدر */
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+  /* form {
+    margin-top: 30px;
+  }
+
+  form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  form input[type="text"],
+  form input[type="date"],
+  form input[type="number"],
+  form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  form textarea {
+    height: 150px;
+  }*/
+
+  form button[type="submit"] {
+    background-color: #078a7d;
+    color: wheat;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    margin-right: 25px;
+  }
+
+
+.alert {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* فوتر */
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}
+
+
+#exit-btn{
+    background: #631836;
+    color: wheat;
+    font-weight: 900;
+    text-decoration: none;
+    border: solid;
+    padding: 7px 30px;
+    border-radius: 23px;
+    margin-left: 4%;
+}
+
+#exit-btn:hover {
+    background: wheat;
+    color: #631836;
+    font-weight: 900;
+    text-decoration: none;  
+    padding: 7px 30px;
+    border-radius: 23px;
+    margin-left: 4%;
+}
+
+
+body {
+    direction: rtl;
+    margin: 0px !important;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 10px;
+    background-color:linear-gradient(#141e30, #17212e);
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    width: 47px;
+    height: 46px;
+    margin: 0px 0px 0px 25px;
+    border-radius: 300px;
+}
+.username {
+    font-weight: bold;
+    margin-left: 10px;
+    color: white;
+    font-size: 19px;
+}   
+.title {
+  text-align: center;
+  font-size: 32px;
+  margin-left: 18%;
+  color: wheat;
+}
+.menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0 0 0 / 33%);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgb(0 0 0 / 33%);
+    border-radius: 10px;
+  }
+  
+  .menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu li {
+    width: 250px;
+    height: 46px;
+    text-align: center;
+    padding-top: 19px;
+    margin-top: 14px;
+    border-bottom: solid 1px #bdece733;
+    position: relative;
+  }
+  
+  .menu li:hover {
+    width: 250px;
+    height: 46px;
+    text-align: center;
+    padding-top: 19px;
+    background: #1c3a4a;
+    margin-top: 14px;
+    border-radius: 13px;
+  }
+  
+  .menu li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .menu img {
+    height: 110px;
+    width: 116px;
+    padding: 0 27%;
+    margin: 45px 0px;
+    text-align: center;
+    border-radius: 300px;
+  }
+  
+  .menu span {
+    margin-bottom: 45px;
+    text-align: center;
+    display: block;
+    color: wheat;
+  }
+
+  
+  .content{
+    padding-right: 260px;
+    display: none !important;
+    border-radius: 7px;
+  }
+
+  .active {
+    display: block !important;
+    background: #161e2c;
+    width: 250px;
+    text-align: right;
+    position: fixed;
+    z-index: 999;
+    padding: 0 !important;
+    top: 40%;
+    right: 249px;
+  box-shadow: 0 15px 25px rgb(0 0 0 / 33%);
+}
+
+.active li{
+    text-align: center;
+    border-bottom: solid 1px #bdece733;
+    position: relative;
+    
+}
+
+.active ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+ul{
+    list-style-type: none !important;
+}
+
+.active ul li a {
+  text-decoration: none;
+  color: white;
+  padding: 23px 17px;
+  display: block;
+  width: 86%;
+  text-align: center;
+  padding-top: 22px;
+}
+.active ul li a:hover {
+  width: 86%;
+  text-align: center;
+  padding:23px 17px;
+  background: #1c3a4a;
+  padding-top: 22px;
+  border-radius: 13px;
+  color: white;
+}
+#sub-gozaresh{
+  top: 50% !important;
+}
+
+.disp{
+  display: none
+}
+.faal{
+  display: block !important;
+  margin: 30px 280px 30px 30px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="submit"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  background-color: #00ffd980;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgb(0 0 0 / 33%);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgb(0 0 0 / 33%);
+  border-radius: 10px;
+}
+
+th, td {
+  text-align: center;
+  padding:20px 12px;
+  border: none;
+  color: white;
+}
+
+
+
+tr:first-child th{
+  padding:30px 15px ;
+}
+
+tr:not(:last-child){
+  border-bottom:  1px solid wheat;
+}
+
+th {
+  background-color: #00ffd980;
+  color: wheat;
+}
+
+td:not(:last-child) {
+  border-right: none;
+}
+
+tr:hover {
+  background-color: #1c2735;
+}
+
+#shomarande{
+  font-size: 20px;
+  color: white;
+  margin: 26px 2px;
+}
+
+.contaner{
+  padding: 30px 280px 30px 30px;
+}
+
+#delete-btn{
+  text-decoration: none;
+  background: #631836;
+  padding: 10px 20px;
+  border-radius: 10px ;
+  color: wheat;
+}
+
+#edit-btn{
+  text-decoration: none;
+  background: #078a7d;
+  padding: 10px 20px;
+  border-radius: 10px ;
+  color: wheat;
+}
+
+a {
+  cursor: pointer !important;
+}
+.form-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: rgb(0 0 0 / 33%);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgb(0 0 0 / 33%);
+    border-radius: 10px;
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: wheat;
+  font-size: 36px;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: wheat;
+}
+
+.form-container input[type="text"],
+.form-container input[type="date"],
+.form-container input[type="number"],
+.form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 30px;
+  border: 1px solid #078a7d;
+  background: #94a0a30a;
+  color: white;
+}
+
+.form-container button[type="submit"] {
+  background-color: #4caf99;
+  color: white;
+  padding: 11px 55px;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.myForm input:focus,
+.myForm input:active ,
+.myForm input:autofill, 
+.myForm input:-webkit-autofill {
+  outline:none !important;
+  background: transparent !important;
+}
+.search {
+  width: 191px;
+  height: 42px;
+  background: transparent;
+  border: 3px solid #078a7d;
+  text-decoration: none;
+  border-radius: 0px 30px 30px 0px;
+  color: white;
+  padding: 0px 20px;
+}
+.search-btn{
+  background: #078a7d !important;
+    color: wheat !important;
+    border-radius: 30px 0px 0px 30px !important;
+    margin: -6px !important;
+}
+
+#mounts{
+  background: #131a25;
+  color: wheat;
+  height: 40px;
+  border: 1px solid #078a7d;
+  border-radius: 11px;
+  text-align: center;
+  width: 17%;
+  margin: 0px -1px;
+}
+
+#mounts option{
+
+}
+#year{
+  background: #131a25;
+  color: wheat;
+  border: 1px solid #078a7d;
+  border-radius: 11px;
+  text-align: center;
+  width: 17%;
+  margin: 0px 25px 0px 0px;
+}
+
+#year::placeholder{
+  color: wheat !important;
+
+}
+.mount-btn{
+
+}
+
+#myForm span{
+  color: white;
+  padding: 0px 30px;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'iran-sans';
+            src: url("/static/fonts/iransans.ttf");
+        }
+        *{
+            font-family: 'iran-sans';
+        }
+        body{
+            background:  linear-gradient(#141e30, #17212e);
+        }
+        .eror {
+            background-color: aliceblue;
+            font-size: 45px;
+            padding: auto;
+            margin: 10% 163px;
+            text-align: center;
+            height: 276px;
+            padding: 70px 35px 0px 32px;
+            border: solid aliceblue;
+            border-radius: 202px;
+            color: #0b5043;
+        }
+        .eror p {
+            height: 15%;
+        }
+    </style>
+</head>
+<body>
+    <div class="eror">
+        <p id="countdown">شما 3 تلاش ناموفق داشتید بعد از <span id="remainingTime"></span> به صورت خودکار به صفحه ورود منتقل خواهید شد</p>
+    </div>
+    <script>
+        var remainingTime = {{t}};
+
+        function updateCountdown() {
+            document.getElementById("remainingTime").textContent = remainingTime + " ثانیه";
+            remainingTime--;
+            if (remainingTime < 0) {
+                clearInterval(countdownInterval);
+            }
+        }
+
+        updateCountdown(); // نمایش اولیه زمان باقی مانده
+
+        var countdownInterval = setInterval(updateCountdown, 1000); // به‌روزرسانی زمان باقی مانده هر ثانیه
+
+        setTimeout(function() {
+            location.reload();
+        }, remainingTime * 1000);
+    </script>
+</body>
+</html>
